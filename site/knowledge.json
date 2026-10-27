@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {"intent": "greeting", "questions": ["hi", "hello", "hey there", "good morning", "hello anyone there"],
+     "answer": "Hi! I'm the Lekopien studio assistant. I can tell you about building a new website, fixing a broken one, pricing and timelines."},
+    {"intent": "new_site", "questions": ["build me a website", "i need a new website", "can you create a site for my business", "design a landing page", "make an online store"],
+     "answer": "We design and build fast, mobile-first websites: landing pages, business sites and online stores. Tell us what your business does and we'll suggest a plan."},
+    {"intent": "fix_site", "questions": ["my website is broken", "site is down", "fix my website", "page not loading", "website errors after update", "my site is slow"],
+     "answer": "We troubleshoot broken, slow or hacked sites. Share the URL and what changed recently, and we'll diagnose it, usually within a day."},
+    {"intent": "pricing", "questions": ["how much does it cost", "what are your prices", "pricing for a website", "is it expensive", "quote for a site"],
+     "answer": "A landing page starts small and a full business site costs more depending on pages and features. Describe your project for a free quote."},
+    {"intent": "timeline", "questions": ["how long does it take", "when will my site be ready", "delivery time", "how fast can you build"],
+     "answer": "A landing page usually takes 3 to 5 days and a multi-page site 2 to 3 weeks, depending on how quickly content arrives."},
+    {"intent": "hosting", "questions": ["do you host websites", "hosting and domain", "can you buy my domain", "where will my site be hosted"],
+     "answer": "We can set up your domain and host your site on reliable free or low-cost platforms such as Cloudflare, with HTTPS included."},
+    {"intent": "seo", "questions": ["will my site show on google", "seo services", "rank higher on google", "search engine optimization"],
+     "answer": "Every site ships with SEO basics: fast loading, clean metadata, a sitemap and Google Search Console setup."},
+    {"intent": "contact", "questions": ["how do i contact you", "talk to a human", "phone number", "email address", "book a call"],
+     "answer": "Use the contact form on lekopien.com or book a call there, and a person will reply soon."},
+    {"intent": "goodbye", "questions": ["bye", "thanks", "thank you", "see you later", "that's all"],
+     "answer": "Thanks for chatting! Come back any time."}
+  ]
+}

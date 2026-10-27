@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+chat*.json
+!site/knowledge.json
+.wrangler/
+node_modules/

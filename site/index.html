@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lekopien AI Assistant</title>
+  <meta name="description" content="An offline AI chatbot built from scratch: TF-IDF retrieval plus a Naive Bayes intent classifier. No API key, runs in your browser.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chat { display: flex; flex-direction: column; height: 460px; padding: 0; overflow: hidden; }
+    .log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; }
+    .msg.user { align-self: flex-end; background: var(--accent); color: #fff; }
+    .msg.bot { align-self: flex-start; background: var(--bg); border: 1px solid var(--line); }
+    .meta { display: block; font: 11px var(--mono); color: var(--muted); margin-top: 4px; }
+    form.say { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+    form.say input { flex: 1; }
+    .bar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+    .bar i { display: block; height: 100%; background: var(--accent-2); }
+  </style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="https://lekopien.com">lekopien<span>.</span>ai</a>
+  <nav><a href="#demo">Demo</a><a href="#how">How it works</a><a href="https://github.com/Lekopien/lekopien-ai-assistant">GitHub</a></nav>
+</div></header>
+<main class="wrap">
+  <div class="hero">
+    <span class="tag">Artificial intelligence</span>
+    <h1>An AI assistant with no API key</h1>
+    <p class="lead">A customer-support chatbot built from first principles. It classifies what you want with a Naive Bayes model and finds the best answer with TF-IDF vector search. Everything runs right here in your browser.</p>
+    <div class="btns"><a class="btn" href="#demo">Try it</a><a class="btn ghost" href="https://github.com/Lekopien/lekopien-ai-assistant">View source</a></div>
+  </div>
+
+  <section id="demo">
+    <h2>Live demo</h2>
+    <div class="card chat">
+      <div class="log" id="log"></div>
+      <form class="say" id="say"><input id="q" autocomplete="off" placeholder="Try: my website is broken, how much is a site?" aria-label="Message"><button class="btn">Send</button></form>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="grid">
+      <div class="card"><h3>1. Tokenize</h3><p>Lowercase, drop stop-words and strip suffixes so "sites" and "site" match.</p></div>
+      <div class="card"><h3>2. Classify intent</h3><p>Multinomial Naive Bayes with Laplace smoothing scores every intent and turns log-probabilities into a confidence.</p></div>
+      <div class="card"><h3>3. Retrieve</h3><p>TF-IDF vectors and cosine similarity pick the closest answer from the knowledge base.</p></div>
+      <div class="card"><h3>4. Fall back</h3><p>Below a similarity threshold it admits it doesn't know. With a local Ollama model it can write free-form answers too.</p></div>
+    </div>
+  </section>
+  <section>
+    <h2>Stack</h2>
+    <div class="chips"><span class="chip">Python 3 (stdlib only)</span><span class="chip">JavaScript ES modules</span><span class="chip">NLP</span><span class="chip">Naive Bayes</span><span class="chip">TF-IDF</span><span class="chip">Ollama (optional)</span><span class="chip">unittest</span></div>
+  </section>
+</main>
+<footer><div class="wrap">Built by <a href="https://lekopien.com">Lekopien</a>. Part of the Lekopien project portfolio.</div></footer>
+<script type="module">
+  import { Assistant } from "./assistant.js";
+  const log = document.getElementById("log");
+  const add = (cls, text, meta) => {
+    const el = document.createElement("div");
+    el.className = "msg " + cls;
+    el.textContent = text;
+    if (meta) { const m = document.createElement("span"); m.className = "meta"; m.textContent = meta; el.append(m); }
+    log.append(el);
+    log.scrollTop = log.scrollHeight;
+  };
+  const kb = await (await fetch("knowledge.json")).json();
+  const bot = new Assistant(kb);
+  add("bot", "Hi! Ask me about building a website, fixing one, pricing or timelines.");
+  document.getElementById("say").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = document.getElementById("q");
+    if (!q.value.trim()) return;
+    add("user", q.value);
+    const r = bot.ask(q.value);
+    add("bot", r.text, `intent: ${r.intent} · ${Math.round(r.confidence * 100)}% · similarity ${r.score.toFixed(2)} · ${r.source}`);
+    q.value = "";
+  });
+</script>
+</body>
+</html>
