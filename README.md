@@ -82,3 +82,7 @@ The `site/` folder is served by a Cloudflare Worker with static assets (`wrangle
 ## License
 
 MIT
+
+## Author
+
+Built by **David Lekopien** ([@Lekopien](https://github.com/Lekopien)) · [lekopien.com](https://lekopien.com)
